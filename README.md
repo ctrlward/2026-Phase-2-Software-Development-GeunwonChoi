@@ -56,7 +56,7 @@ To complete the technical component of Phase 2 and submit evidence of your compl
 2. The form will open from **Week 4 (starting July 13, 0:00)**. 
  [MSA 2026 Phase 2 Submission](https://forms.office.com/r/tRVKyQZVZ7)
  
-**The submission deadline is 11:59 pm, Sunday, 2 August**
+**(Please Note: one-week extension offered, the new submission deadline is 11:59 pm, Sunday, 9 August)**
 
 The MSA programme strictly enforces academic integrity and students that do not submit their own work will first be notified with our concerns, and if your work is determined to be copied from someone/somewhere else and/or insufficiently different from others if you have collaborated or troubleshoot with other parties (including MSA team members and the content created by them in this repository), you may not be invited to any events and activities as part of the non-technical component of Phase 2.
 
