@@ -1,4 +1,4 @@
-# 📋 Project Charter: Leveling Alone
+# Project Charter: Leveling Alone
 
 ## 1. Executive Summary
 **Leveling Alone** is a **gamification-based productivity and habit-tracking web application** designed for students and developers. 
@@ -18,7 +18,7 @@ MSA 2026 Phase 2 centers around **Gamification**, which is integrated into the c
 
 ## 3. Scope & Key Features
 
-### 🔹 Basic Requirements
+### Basic Requirements
 - **Backend (.NET 10 Web API + EF Core)**: 
   - *Rationale*: Selected for reliable business logic processing, database persistence via EF Core, and automated API documentation using Scalar.
   - Full RESTful CRUD APIs for User and Quest entities, Scalar API UI integration (`/scalar`), and xUnit unit tests.
@@ -26,7 +26,7 @@ MSA 2026 Phase 2 centers around **Gamification**, which is integrated into the c
   - *Rationale*: Chosen for component reusability, strong type safety, and building a responsive Single Page Application (SPA).
   - Responsive SPA layout (Desktop & Mobile), React Router navigation (Dashboard, Badges), and Vitest unit tests.
 
-### 🌟 Advanced Requirements (Selected 3 Features)
+### Advanced Requirements (Selected 3 Features)
 1. **Security Measures**
    - *Rationale*: Essential for protecting user credentials, preventing token tampering, and enforcing DTO input validation.
    - BCrypt/PBKDF2 password hashing, JWT-based authentication, Role-Based Access Control (RBAC), and DTO input validation.
