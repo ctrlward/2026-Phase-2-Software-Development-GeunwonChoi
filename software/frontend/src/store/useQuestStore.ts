@@ -18,7 +18,7 @@ interface QuestState {
   clearError: () => void;
 }
 
-export const useQuestStore = create<QuestState>((set, get) => ({
+export const useQuestStore = create<QuestState>((set) => ({
   quests: [],
   isLoading: false,
   error: null,
