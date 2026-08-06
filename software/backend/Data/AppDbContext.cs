@@ -105,5 +105,22 @@ public class AppDbContext : DbContext
                 RequiredValue = 30
             }
         );
+
+        // Seed default system administrator user
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Id = Guid.Parse("99999999-9999-9999-9999-999999999999"),
+                Username = "system_admin",
+                Email = "admin@levelingalone.com",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("AdminPassword123!"),
+                Role = "Admin",
+                Level = 100,
+                CurrentXP = 0,
+                RequiredXP = 10000,
+                StreakCount = 99,
+                CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+            }
+        );
     }
 }

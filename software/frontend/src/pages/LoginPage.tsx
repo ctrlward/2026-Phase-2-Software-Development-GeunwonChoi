@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import { Link, useNavigate } from 'react-router-dom';
-import { Shield, Lock, User as UserIcon, AlertCircle } from 'lucide-react';
+import { Shield, Lock, User as UserIcon, AlertCircle, KeyRound, ArrowRight } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
@@ -20,62 +20,106 @@ export const LoginPage: React.FC = () => {
     }
   };
 
+  const handleQuickAdminFill = () => {
+    setUsernameOrEmail('admin@levelingalone.com');
+    setPassword('AdminPassword123!');
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
-      <div className="glass-panel w-full max-w-md p-8 border border-cyan-500/30 relative overflow-hidden shadow-[0_0_50px_rgba(0,229,255,0.15)]">
+    <div className="auth-page-container">
+      <div className="auth-card">
         {/* Header Branding */}
-        <div className="text-center mb-8">
-          <div className="inline-flex p-3 rounded-2xl bg-cyan-950/60 border border-cyan-800 mb-3">
-            <Shield className="w-10 h-10 text-cyan-400 animate-pulse" />
+        <div className="auth-header">
+          <div className="auth-icon-wrapper">
+            <Shield style={{ width: 44, height: 44, color: 'var(--accent-cyan)' }} />
           </div>
-          <h1 className="font-hud text-2xl font-extrabold text-hud-cyan tracking-wider">
+          <h1 className="font-hud text-hud-cyan" style={{ fontSize: '1.75rem', fontWeight: 900 }}>
             SYSTEM AUTHENTICATION
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
             Access Leveling Alone System Interface
           </p>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-rose-950/60 border border-rose-800 text-rose-300 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div style={{
+            padding: '0.85rem',
+            borderRadius: '12px',
+            background: 'rgba(244, 63, 94, 0.15)',
+            border: '1px solid rgba(244, 63, 94, 0.4)',
+            color: 'var(--accent-danger)',
+            fontSize: '0.85rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
+            <AlertCircle style={{ width: 18, height: 18, flexShrink: 0 }} />
             <span>{error}</span>
           </div>
         )}
 
+        {/* Quick Admin Test Hint */}
+        <div style={{
+          padding: '0.75rem 1rem',
+          borderRadius: '12px',
+          background: 'rgba(15, 23, 42, 0.7)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          fontSize: '0.8rem',
+          color: 'var(--text-secondary)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <KeyRound style={{ width: 16, height: 16, color: 'var(--accent-gold)' }} />
+            <span>System Admin: <strong style={{ color: '#fff' }}>admin@levelingalone.com</strong></span>
+          </div>
+          <button
+            type="button"
+            onClick={handleQuickAdminFill}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--accent-gold)',
+              fontWeight: 700,
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              fontSize: '0.75rem'
+            }}
+          >
+            Auto-fill
+          </button>
+        </div>
+
         {/* Login Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-xs font-mono text-slate-300 mb-1">
-              USERNAME OR EMAIL
-            </label>
-            <div className="relative">
-              <UserIcon className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div className="form-group">
+            <label className="form-label">Username or Email</label>
+            <div className="input-wrapper">
+              <UserIcon className="input-icon" />
               <input
                 type="text"
                 required
                 value={usernameOrEmail}
                 onChange={(e) => setUsernameOrEmail(e.target.value)}
-                placeholder="Enter username or email"
-                className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900/80 border border-slate-700 text-slate-100 text-sm focus:border-cyan-400 focus:outline-none"
+                placeholder="Enter hunter username or email"
+                className="input-field"
               />
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-mono text-slate-300 mb-1">
-              PASSWORD
-            </label>
-            <div className="relative">
-              <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <div className="input-wrapper">
+              <Lock className="input-icon" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900/80 border border-slate-700 text-slate-100 text-sm focus:border-cyan-400 focus:outline-none"
+                className="input-field"
               />
             </div>
           </div>
@@ -83,16 +127,29 @@ export const LoginPage: React.FC = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 rounded-lg font-hud font-bold text-xs tracking-wider bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all"
+            className="btn-primary"
+            style={{ marginTop: '0.5rem' }}
           >
-            {isLoading ? 'AUTHENTICATING...' : 'INITIALIZE SYSTEM'}
+            {isLoading ? (
+              'Authenticating...'
+            ) : (
+              <>
+                Initialize System <ArrowRight style={{ width: 18, height: 18 }} />
+              </>
+            )}
           </button>
         </form>
 
-        <div className="mt-6 text-center text-xs text-slate-400">
+        <div style={{
+          textAlign: 'center',
+          paddingTop: '1rem',
+          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          fontSize: '0.85rem',
+          color: 'var(--text-secondary)'
+        }}>
           New Hunter?{' '}
-          <Link to="/register" className="text-cyan-400 font-semibold hover:underline">
-            Awaken Hunter Account
+          <Link to="/register" style={{ color: 'var(--accent-cyan)', fontWeight: 700, textDecoration: 'none' }}>
+            Awaken Hunter Account →
           </Link>
         </div>
       </div>

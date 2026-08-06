@@ -15,6 +15,8 @@ export interface User {
   unlockedBadgeCount: number;
 }
 
+export type UserProfile = User;
+
 export interface Quest {
   id: string;
   userId: string;

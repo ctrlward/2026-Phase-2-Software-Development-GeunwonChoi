@@ -5,14 +5,13 @@ import { QuestCard } from '../components/QuestCard';
 import { QuestModal } from '../components/QuestModal';
 import { LevelUpModal } from '../components/LevelUpModal';
 import { Quest, CreateQuestInput } from '../types';
-import { PlusCircle, Target, CheckCircle2, ListFilter, Flame, Zap } from 'lucide-react';
+import { PlusCircle, Target, CheckCircle2, ListFilter, Sparkles, Inbox } from 'lucide-react';
 
 export const DashboardPage: React.FC = () => {
   const { user } = useAuthStore();
   const {
     quests,
     isLoading,
-    error,
     completionEvent,
     fetchQuests,
     createQuest,
@@ -58,114 +57,121 @@ export const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 pb-12 space-y-6">
+    <div className="page-container">
       {/* Hunter Dashboard Header */}
-      <div className="glass-panel p-6 border border-cyan-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-mono text-cyan-400 uppercase tracking-widest">
-              PLAYER COMMAND CENTER
+      <div className="glass-card dashboard-header">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div>
+            <span style={{ fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 700, color: 'var(--accent-cyan)', background: 'rgba(0, 229, 255, 0.1)', padding: '0.25rem 0.75rem', borderRadius: '9999px', border: '1px solid rgba(0, 229, 255, 0.3)' }}>
+              PLAYER COMMAND CENTER // DASHBOARD
             </span>
           </div>
-          <h1 className="font-hud text-2xl font-bold text-slate-100 mt-1">
-            Welcome Back, <span className="text-hud-cyan">{user?.username}</span>
+          <h1 className="font-hud text-hud-cyan" style={{ fontSize: '1.85rem', fontWeight: 900 }}>
+            Welcome Back, <span style={{ color: '#fff' }}>{user?.username}</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Complete daily quests to gain XP, unlock badges, and advance your Hunter Rank.
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', maxWidth: '640px' }}>
+            Execute daily productivity quests to gain XP, trigger flame boosters, and rank up from E-Rank to National-Level Hunter.
           </p>
         </div>
 
         <button
           onClick={handleOpenCreate}
-          className="px-5 py-3 rounded-xl font-hud font-bold text-xs bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all flex items-center gap-2"
+          className="btn-primary"
+          style={{ width: 'auto', flexShrink: 0 }}
         >
-          <PlusCircle className="w-4 h-4" />
-          <span>NEW QUEST</span>
+          <PlusCircle style={{ width: 18, height: 18 }} />
+          <span>Initialize New Quest</span>
         </button>
       </div>
 
       {/* Quest Quick Stats Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="glass-panel p-4 flex items-center gap-3">
-          <div className="p-3 rounded-lg bg-cyan-950/60 text-cyan-400 border border-cyan-800">
-            <Target className="w-5 h-5" />
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-icon">
+            <Target style={{ width: 28, height: 28, color: 'var(--accent-cyan)' }} />
           </div>
           <div>
-            <div className="text-xs text-slate-400 font-mono">ACTIVE QUESTS</div>
-            <div className="text-xl font-bold font-hud text-slate-100">
+            <div style={{ fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 700, color: 'var(--text-secondary)' }}>ACTIVE QUESTS</div>
+            <div className="font-hud" style={{ fontSize: '1.75rem', fontWeight: 900, color: '#fff', marginTop: '0.25rem' }}>
               {activeCount}
             </div>
           </div>
         </div>
 
-        <div className="glass-panel p-4 flex items-center gap-3">
-          <div className="p-3 rounded-lg bg-emerald-950/60 text-emerald-400 border border-emerald-800">
-            <CheckCircle2 className="w-5 h-5" />
+        <div className="stat-card">
+          <div className="stat-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', borderColor: 'rgba(16, 185, 129, 0.3)' }}>
+            <CheckCircle2 style={{ width: 28, height: 28, color: 'var(--accent-success)' }} />
           </div>
           <div>
-            <div className="text-xs text-slate-400 font-mono">COMPLETED</div>
-            <div className="text-xl font-bold font-hud text-emerald-400">
+            <div style={{ fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 700, color: 'var(--text-secondary)' }}>COMPLETED QUESTS</div>
+            <div className="font-hud" style={{ fontSize: '1.75rem', fontWeight: 900, color: '#fff', marginTop: '0.25rem' }}>
               {completedCount}
             </div>
           </div>
         </div>
 
-        <div className="glass-panel p-4 flex items-center gap-3">
-          <div className="p-3 rounded-lg bg-amber-950/60 text-amber-400 border border-amber-800">
-            <Flame className="w-5 h-5" />
+        <div className="stat-card">
+          <div className="stat-icon" style={{ background: 'rgba(251, 191, 36, 0.1)', borderColor: 'rgba(251, 191, 36, 0.3)' }}>
+            <Sparkles style={{ width: 28, height: 28, color: 'var(--accent-gold)' }} />
           </div>
           <div>
-            <div className="text-xs text-slate-400 font-mono">CURRENT STREAK</div>
-            <div className="text-xl font-bold font-hud text-amber-400">
-              {user?.streakCount} DAYS
+            <div style={{ fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 700, color: 'var(--text-secondary)' }}>HUNTER RANK TIER</div>
+            <div className="font-hud" style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--accent-gold)', marginTop: '0.25rem' }}>
+              {user?.rankTier}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-3 flex-wrap gap-3">
-        <div className="flex items-center gap-2">
-          <ListFilter className="w-4 h-4 text-slate-400" />
-          <span className="text-xs font-mono text-slate-400">FILTER:</span>
-          {(['all', 'active', 'completed'] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-3 py-1 rounded-lg text-xs font-mono capitalize transition-all ${
-                filter === f
-                  ? 'bg-cyan-950/80 text-cyan-300 border border-cyan-700 font-bold'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              {f}
-            </button>
-          ))}
+      {/* Quest Filtering Bar & Section Title */}
+      <div className="filter-bar">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <ListFilter style={{ width: 20, height: 20, color: 'var(--accent-cyan)' }} />
+          <h2 className="font-hud" style={{ fontSize: '1.25rem', fontWeight: 800 }}>
+            SYSTEM QUEST LOG ({filteredQuests.length})
+          </h2>
+        </div>
+
+        <div className="filter-pills">
+          <button
+            onClick={() => setFilter('all')}
+            className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
+          >
+            All ({quests.length})
+          </button>
+          <button
+            onClick={() => setFilter('active')}
+            className={`filter-btn ${filter === 'active' ? 'active' : ''}`}
+          >
+            Active ({activeCount})
+          </button>
+          <button
+            onClick={() => setFilter('completed')}
+            className={`filter-btn ${filter === 'completed' ? 'active' : ''}`}
+          >
+            Completed ({completedCount})
+          </button>
         </div>
       </div>
 
-      {/* Error Banner */}
-      {error && (
-        <div className="p-3 rounded-lg bg-rose-950/60 border border-rose-800 text-rose-300 text-xs">
-          {error}
-        </div>
-      )}
-
-      {/* Quest List */}
-      {isLoading && quests.length === 0 ? (
-        <div className="text-center py-12 text-slate-500 font-mono text-xs">
-          LOADING SYSTEM QUESTS...
+      {/* Quest List Grid */}
+      {isLoading ? (
+        <div className="glass-card" style={{ textAlign: 'center', padding: '4rem 2rem', color: 'var(--text-secondary)', fontFamily: 'monospace' }}>
+          <div className="animate-spin" style={{ width: 32, height: 32, border: '4px solid var(--accent-cyan)', borderTopColor: 'transparent', borderRadius: '50%', margin: '0 auto 1rem auto' }} />
+          Synchronizing quest data with System Server...
         </div>
       ) : filteredQuests.length === 0 ? (
-        <div className="glass-panel p-12 text-center space-y-3">
-          <Zap className="w-10 h-10 text-slate-600 mx-auto animate-bounce" />
-          <h3 className="text-lg font-hud text-slate-300">NO QUESTS FOUND</h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
-            You currently have no quests registered under this filter. Click 'NEW QUEST' above to start earning XP!
+        <div className="glass-card" style={{ textAlign: 'center', padding: '4rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+          <Inbox style={{ width: 48, height: 48, color: 'var(--text-muted)' }} />
+          <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>No Quests Found</h3>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', maxWidth: '420px' }}>
+            {filter === 'completed'
+              ? 'No completed quests yet. Execute active quests to earn rewards!'
+              : 'Your quest log is clear. Click "Initialize New Quest" above to add your next task!'}
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {filteredQuests.map((quest) => (
             <QuestCard
               key={quest.id}
@@ -178,7 +184,7 @@ export const DashboardPage: React.FC = () => {
         </div>
       )}
 
-      {/* Quest Creation/Edit Modal */}
+      {/* Quest Modal */}
       <QuestModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -186,7 +192,7 @@ export const DashboardPage: React.FC = () => {
         editingQuest={editingQuest}
       />
 
-      {/* Level Up & Completion Reward Modal */}
+      {/* Level Up Reward Popup Modal */}
       {completionEvent && (
         <LevelUpModal
           event={completionEvent}

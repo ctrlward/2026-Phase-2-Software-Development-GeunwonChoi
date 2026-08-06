@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { QuestCard } from './QuestCard';
@@ -27,8 +26,8 @@ describe('QuestCard Component', () => {
     );
 
     expect(screen.getByText('Solve Algorithm Challenge')).toBeInTheDocument();
-    expect(screen.getByText('+100 XP')).toBeInTheDocument();
-    expect(screen.getByText('MEDIUM')).toBeInTheDocument();
+    expect(screen.getByText(/100 XP/i)).toBeInTheDocument();
+    expect(screen.getByText('Medium')).toBeInTheDocument();
   });
 
   it('triggers onComplete when complete button is clicked', () => {

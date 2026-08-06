@@ -1,12 +1,13 @@
 import React from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import { useThemeStore } from '../store/useThemeStore';
-import { Sun, Moon, Flame, LogOut, Shield, Award } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Sun, Moon, Flame, LogOut, Shield, Award, LayoutDashboard } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
   const { user, logout } = useAuthStore();
   const { theme, toggleTheme } = useThemeStore();
+  const location = useLocation();
 
   if (!user) return null;
 
@@ -31,42 +32,44 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="glass-panel sticky top-0 z-40 mb-6 px-4 py-3 border-b">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Brand & System Title */}
-        <div className="flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-2 no-underline">
-            <Shield className="w-7 h-7 text-cyan-400 animate-pulse" />
-            <span className="font-hud text-xl font-bold text-hud-cyan tracking-wider">
+    <header className="navbar-header">
+      <div className="navbar-inner">
+        {/* Brand & Title */}
+        <Link to="/" className="navbar-brand">
+          <div style={{ padding: '0.5rem', borderRadius: '12px', background: 'rgba(0, 229, 255, 0.1)', border: '1px solid rgba(0, 229, 255, 0.3)', display: 'inline-flex' }}>
+            <Shield style={{ width: 24, height: 24, color: 'var(--accent-cyan)' }} />
+          </div>
+          <div>
+            <span className="font-hud text-hud-cyan" style={{ fontSize: '1.15rem', fontWeight: 800, display: 'block', lineHeight: 1.2 }}>
               LEVELING ALONE
             </span>
-          </Link>
-          <span className="text-xs px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-800 font-mono">
-            SYSTEM HUD v1.0
-          </span>
-        </div>
+            <span style={{ fontSize: '0.65rem', fontFamily: 'monospace', color: 'var(--text-secondary)', letterSpacing: '0.1em' }}>
+              SYSTEM HUD v1.0
+            </span>
+          </div>
+        </Link>
 
         {/* User Stats & XP Bar */}
-        <div className="flex-1 max-w-xl w-full flex flex-col gap-1">
-          <div className="flex items-center justify-between text-xs font-mono">
-            <div className="flex items-center gap-2">
-              <span className="font-hud font-bold text-amber-400">
+        <div className="navbar-stats">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.75rem', fontFamily: 'monospace' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span className="font-hud" style={{ color: 'var(--accent-gold)', fontWeight: 700 }}>
                 LVL {user.level}
               </span>
-              <span className="px-1.5 py-0.5 rounded bg-purple-950/80 text-purple-300 border border-purple-800 text-[10px] font-bold">
+              <span style={{ padding: '0.15rem 0.5rem', borderRadius: '9999px', background: 'rgba(168, 85, 247, 0.2)', color: 'var(--accent-purple)', border: '1px solid rgba(168, 85, 247, 0.4)', fontSize: '0.65rem', fontWeight: 800 }}>
                 {user.rankTier}
               </span>
             </div>
 
             {/* Streak Booster Indicator */}
-            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-900/60 border border-slate-700">
-              <Flame className={`w-4 h-4 ${getFlameClass(user.streakFlameColor)}`} />
-              <span className="font-bold text-amber-300">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.15rem 0.6rem', borderRadius: '9999px', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+              <Flame className={`w-3.5 h-3.5 ${getFlameClass(user.streakFlameColor)}`} />
+              <span style={{ fontWeight: 700, color: 'var(--accent-gold)', fontSize: '0.75rem' }}>
                 {user.streakCount} D STREAK
               </span>
             </div>
 
-            <span className="text-slate-400">
+            <span style={{ color: 'var(--text-secondary)' }}>
               {user.currentXP} / {user.requiredXP} XP ({xpPercentage}%)
             </span>
           </div>
@@ -81,31 +84,52 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* Action Controls & Navigation */}
-        <div className="flex items-center gap-3">
+        <div className="navbar-actions">
+          <Link
+            to="/"
+            className={`nav-link-btn ${location.pathname === '/' ? 'active' : ''}`}
+          >
+            <LayoutDashboard style={{ width: 16, height: 16 }} />
+            <span>Dashboard</span>
+          </Link>
+
           <Link
             to="/badges"
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-purple-950/40 hover:bg-purple-900/60 text-purple-300 border border-purple-700/50 transition-all no-underline"
+            className={`nav-link-btn ${location.pathname === '/badges' ? 'active' : ''}`}
           >
-            <Award className="w-4 h-4" />
+            <Award style={{ width: 16, height: 16 }} />
             <span>Badges ({user.unlockedBadgeCount})</span>
           </Link>
+
+          {user.role === 'Admin' && (
+            <Link
+              to="/admin"
+              className={`nav-link-btn ${location.pathname === '/admin' ? 'active' : ''}`}
+              style={{ borderColor: 'rgba(251, 191, 36, 0.4)', color: 'var(--accent-gold)' }}
+            >
+              <Shield style={{ width: 16, height: 16 }} />
+              <span>Admin</span>
+            </Link>
+          )}
 
           {/* Dark / Light Theme Switcher */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg bg-slate-800/60 hover:bg-slate-700/60 text-amber-300 border border-slate-700 transition-all"
+            className="nav-link-btn"
+            style={{ padding: '0.6rem' }}
             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
           >
-            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {theme === 'dark' ? <Sun style={{ width: 16, height: 16, color: 'var(--accent-gold)' }} /> : <Moon style={{ width: 16, height: 16 }} />}
           </button>
 
           {/* Logout Button */}
           <button
             onClick={logout}
-            className="p-2 rounded-lg bg-rose-950/40 hover:bg-rose-900/60 text-rose-400 border border-rose-800/50 transition-all"
+            className="nav-link-btn"
+            style={{ padding: '0.6rem', color: 'var(--accent-danger)', borderColor: 'rgba(244, 63, 94, 0.4)', background: 'rgba(244, 63, 94, 0.1)' }}
             title="Logout System"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut style={{ width: 16, height: 16 }} />
           </button>
         </div>
       </div>

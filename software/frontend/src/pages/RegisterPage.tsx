@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import { Link, useNavigate } from 'react-router-dom';
-import { Shield, Lock, User as UserIcon, Mail, AlertCircle } from 'lucide-react';
+import { Shield, Lock, User as UserIcon, Mail, AlertCircle, ArrowRight } from 'lucide-react';
 
 export const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -22,72 +22,76 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
-      <div className="glass-panel w-full max-w-md p-8 border border-purple-500/30 relative overflow-hidden shadow-[0_0_50px_rgba(157,78,221,0.15)]">
+    <div className="auth-page-container">
+      <div className="auth-card" style={{ borderColor: 'rgba(168, 85, 247, 0.35)', boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(168, 85, 247, 0.15)' }}>
         {/* Header Branding */}
-        <div className="text-center mb-8">
-          <div className="inline-flex p-3 rounded-2xl bg-purple-950/60 border border-purple-800 mb-3">
-            <Shield className="w-10 h-10 text-purple-400 animate-pulse" />
+        <div className="auth-header">
+          <div className="auth-icon-wrapper" style={{ background: 'rgba(168, 85, 247, 0.08)', borderColor: 'rgba(168, 85, 247, 0.3)' }}>
+            <Shield style={{ width: 44, height: 44, color: 'var(--accent-purple)' }} />
           </div>
-          <h1 className="font-hud text-2xl font-extrabold text-purple-400 tracking-wider">
+          <h1 className="font-hud" style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--accent-purple)', textShadow: '0 0 12px rgba(168, 85, 247, 0.4)' }}>
             HUNTER REGISTRATION
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
             Awaken Your Player Account
           </p>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-rose-950/60 border border-rose-800 text-rose-300 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div style={{
+            padding: '0.85rem',
+            borderRadius: '12px',
+            background: 'rgba(244, 63, 94, 0.15)',
+            border: '1px solid rgba(244, 63, 94, 0.4)',
+            color: 'var(--accent-danger)',
+            fontSize: '0.85rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
+            <AlertCircle style={{ width: 18, height: 18, flexShrink: 0 }} />
             <span>{error}</span>
           </div>
         )}
 
         {/* Registration Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-xs font-mono text-slate-300 mb-1">
-              HUNTER USERNAME
-            </label>
-            <div className="relative">
-              <UserIcon className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div className="form-group">
+            <label className="form-label">Hunter Username</label>
+            <div className="input-wrapper">
+              <UserIcon className="input-icon" />
               <input
                 type="text"
                 required
                 minLength={3}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Choose username"
-                className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900/80 border border-slate-700 text-slate-100 text-sm focus:border-purple-400 focus:outline-none"
+                placeholder="Choose hunter username"
+                className="input-field"
               />
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-mono text-slate-300 mb-1">
-              EMAIL ADDRESS
-            </label>
-            <div className="relative">
-              <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+          <div className="form-group">
+            <label className="form-label">Email Address</label>
+            <div className="input-wrapper">
+              <Mail className="input-icon" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="hunter@association.com"
-                className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900/80 border border-slate-700 text-slate-100 text-sm focus:border-purple-400 focus:outline-none"
+                className="input-field"
               />
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-mono text-slate-300 mb-1">
-              PASSWORD
-            </label>
-            <div className="relative">
-              <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <div className="input-wrapper">
+              <Lock className="input-icon" />
               <input
                 type="password"
                 required
@@ -95,7 +99,7 @@ export const RegisterPage: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Min 6 characters"
-                className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900/80 border border-slate-700 text-slate-100 text-sm focus:border-purple-400 focus:outline-none"
+                className="input-field"
               />
             </div>
           </div>
@@ -103,16 +107,33 @@ export const RegisterPage: React.FC = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 rounded-lg font-hud font-bold text-xs tracking-wider bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-slate-100 shadow-[0_0_20px_rgba(157,78,221,0.4)] transition-all"
+            className="btn-primary"
+            style={{
+              background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+              boxShadow: '0 4px 20px rgba(168, 85, 247, 0.4)',
+              marginTop: '0.5rem'
+            }}
           >
-            {isLoading ? 'REGISTERING...' : 'AWAKEN ACCOUNT'}
+            {isLoading ? (
+              'Awakening Account...'
+            ) : (
+              <>
+                Awaken Player Account <ArrowRight style={{ width: 18, height: 18 }} />
+              </>
+            )}
           </button>
         </form>
 
-        <div className="mt-6 text-center text-xs text-slate-400">
-          Already Awoken?{' '}
-          <Link to="/login" className="text-purple-400 font-semibold hover:underline">
-            Login System
+        <div style={{
+          textAlign: 'center',
+          paddingTop: '1rem',
+          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          fontSize: '0.85rem',
+          color: 'var(--text-secondary)'
+        }}>
+          Already Awakened?{' '}
+          <Link to="/login" style={{ color: 'var(--accent-purple)', fontWeight: 700, textDecoration: 'none' }}>
+            Sign In System →
           </Link>
         </div>
       </div>
