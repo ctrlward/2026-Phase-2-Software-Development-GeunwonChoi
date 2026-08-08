@@ -98,7 +98,7 @@ export const Navbar: React.FC = () => {
             className={`nav-link-btn ${location.pathname === '/badges' ? 'active' : ''}`}
           >
             <Award style={{ width: 16, height: 16 }} />
-            <span>Badges ({user.unlockedBadgeCount})</span>
+            <span>Badges</span>
           </Link>
 
           {user.role === 'Admin' && (
