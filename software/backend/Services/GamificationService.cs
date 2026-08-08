@@ -109,7 +109,53 @@ public class GamificationService : IGamificationService
 
     public async Task<List<BadgeDto>> GetUserBadgesAsync(Guid userId)
     {
+        var user = await _context.Users.FindAsync(userId);
         var allBadges = await _context.Badges.ToListAsync();
+
+        if (user != null && user.Role == "Admin")
+        {
+            var existingBadgeIds = await _context.UserBadges
+                .Where(ub => ub.UserId == userId)
+                .Select(ub => ub.BadgeId)
+                .ToListAsync();
+
+            bool changesMade = false;
+            foreach (var badge in allBadges)
+            {
+                if (!existingBadgeIds.Contains(badge.Id))
+                {
+                    _context.UserBadges.Add(new UserBadge
+                    {
+                        UserId = userId,
+                        BadgeId = badge.Id,
+                        UnlockedAt = DateTime.UtcNow
+                    });
+                    changesMade = true;
+                }
+            }
+
+            if (changesMade)
+            {
+                await _context.SaveChangesAsync();
+            }
+
+            var updatedUserBadges = await _context.UserBadges
+                .Where(ub => ub.UserId == userId)
+                .ToDictionaryAsync(ub => ub.BadgeId, ub => ub.UnlockedAt);
+
+            return allBadges.Select(b => new BadgeDto
+            {
+                Id = b.Id,
+                Name = b.Name,
+                Description = b.Description,
+                IconUrl = b.IconUrl,
+                RequiredType = b.RequiredType,
+                RequiredValue = b.RequiredValue,
+                IsUnlocked = true,
+                UnlockedAt = updatedUserBadges.TryGetValue(b.Id, out var unlockedAt) ? unlockedAt : DateTime.UtcNow
+            }).ToList();
+        }
+
         var userBadges = await _context.UserBadges
             .Where(ub => ub.UserId == userId)
             .ToDictionaryAsync(ub => ub.BadgeId, ub => ub.UnlockedAt);

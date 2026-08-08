@@ -33,11 +33,11 @@ export const LoginPage: React.FC = () => {
           <div className="auth-icon-wrapper">
             <Shield style={{ width: 44, height: 44, color: 'var(--accent-cyan)' }} />
           </div>
-          <h1 className="font-hud text-hud-cyan" style={{ fontSize: '1.75rem', fontWeight: 900 }}>
-            SYSTEM AUTHENTICATION
+          <h1 className="font-hud text-hud-cyan" style={{ fontSize: '1.65rem', fontWeight: 900, textAlign: 'center', lineHeight: 1.25 }}>
+            Access Leveling Alone System
           </h1>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-            Access Leveling Alone System Interface
+          <p className="font-hud" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '0.35rem', letterSpacing: '0.05em' }}>
+            system Authentication
           </p>
         </div>
 
@@ -58,39 +58,6 @@ export const LoginPage: React.FC = () => {
             <span>{error}</span>
           </div>
         )}
-
-        {/* Quick Admin Test Hint */}
-        <div style={{
-          padding: '0.75rem 1rem',
-          borderRadius: '12px',
-          background: 'rgba(15, 23, 42, 0.7)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          fontSize: '0.8rem',
-          color: 'var(--text-secondary)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <KeyRound style={{ width: 16, height: 16, color: 'var(--accent-gold)' }} />
-            <span>System Admin: <strong style={{ color: '#fff' }}>admin@levelingalone.com</strong></span>
-          </div>
-          <button
-            type="button"
-            onClick={handleQuickAdminFill}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'var(--accent-gold)',
-              fontWeight: 700,
-              cursor: 'pointer',
-              textDecoration: 'underline',
-              fontSize: '0.75rem'
-            }}
-          >
-            Auto-fill
-          </button>
-        </div>
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -153,6 +120,44 @@ export const LoginPage: React.FC = () => {
           </Link>
         </div>
       </div>
+
+      {/* Floating Key Icon for Quick Admin Auto-fill at Bottom Right */}
+      <button
+        type="button"
+        onClick={handleQuickAdminFill}
+        title="Auto-fill System Admin Credentials"
+        style={{
+          position: 'fixed',
+          bottom: '1.5rem',
+          right: '1.5rem',
+          width: '44px',
+          height: '44px',
+          borderRadius: '50%',
+          background: 'rgba(15, 23, 42, 0.85)',
+          border: '1px solid rgba(251, 191, 36, 0.6)',
+          boxShadow: '0 0 20px rgba(251, 191, 36, 0.3), 0 8px 24px rgba(0, 0, 0, 0.6)',
+          color: 'var(--accent-gold)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          transition: 'all 0.2s ease',
+          backdropFilter: 'blur(10px)',
+          zIndex: 50
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'scale(1.1)';
+          e.currentTarget.style.borderColor = 'var(--accent-gold)';
+          e.currentTarget.style.boxShadow = '0 0 25px rgba(251, 191, 36, 0.6), 0 10px 28px rgba(0, 0, 0, 0.8)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'scale(1)';
+          e.currentTarget.style.borderColor = 'rgba(251, 191, 36, 0.6)';
+          e.currentTarget.style.boxShadow = '0 0 20px rgba(251, 191, 36, 0.3), 0 8px 24px rgba(0, 0, 0, 0.6)';
+        }}
+      >
+        <KeyRound style={{ width: 20, height: 20 }} />
+      </button>
     </div>
   );
 };
